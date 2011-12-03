@@ -1,0 +1,89 @@
+<!DOCTYPE html> 
+<html class="no-js">
+<head>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script> 
+<script type="text/javascript">
+//graph function
+//from http://www.html5laboratory.com/creating-a-bar-chart-with-canvas.php
+
+function graph(){
+
+    var graphCanvas = document.getElementById('graphSpace'); //if we're using jQuery surely can just get this...?
+
+    // Ensure that the element is available within the DOM
+    if (graphCanvas && graphCanvas.getContext) {
+      // Open a 2D context within the canvas
+      var context = graphCanvas.getContext('2d');
+
+      // Bar chart data
+      var data = new Array(5);
+      data[0] = "apples,200";
+      data[1] = "oranges,120";
+      data[2] = "bananas,80";
+      data[3] = "kiwis,230";
+      data[4] = "tangarines,340";
+
+      // Draw the bar chart
+      drawBarChart(context, data, 50, 50, (graphCanvas.height - 20), 50);
+    }
+}
+
+function drawBarChart(context, data, startX, barWidth, chartHeight, markDataIncrementsIn) {
+  // Draw the x and y axes
+  context.lineWidth = " 1.0";
+  var startY = 380;
+  drawLine(context, startX, startY, startX, 30); 
+  drawLine(context, startX, startY, 570, startY);			
+  context.lineWidth = "0.0";
+  var maxValue = 0;
+  for (var i=0; i < data.length; i++) {
+    // Extract the data
+    var values = data[i].split(",");
+    var name = values[0];
+    var height = parseInt(values[1]);
+    if (parseInt(height) > parseInt(maxValue)) maxValue = height;
+	
+    // Write the data to the chart
+    context.fillStyle = "#b90000";
+    drawRectangle(context,startX + (i * barWidth) + i,(chartHeight - height),barWidth,height,true);
+	
+    // Add the column title to the x-axis
+    context.textAlign = "left";
+    context.fillStyle = "#000";
+    context.fillText(name, startX + (i * barWidth) + i, chartHeight + 10, 200);		
+  }
+  // Add some data markers to the y-axis
+  var numMarkers = Math.ceil(maxValue / markDataIncrementsIn);
+  context.textAlign = "right";
+  context.fillStyle = "#000";
+  var markerValue = 0;
+  for (var i=0; i < numMarkers; i++) {		
+    context.fillText(markerValue, (startX - 5), (chartHeight - markerValue), 50);
+    markerValue += markDataIncrementsIn;
+  }
+}
+// drawLine - draws a line on a canvas context from the start point to the end point 
+function drawLine(contextO, startx, starty, endx, endy) {
+  contextO.beginPath();
+  contextO.moveTo(startx, starty);
+  contextO.lineTo(endx, endy);
+  contextO.closePath();
+  contextO.stroke();
+}
+
+// drawRectangle - draws a rectangle on a canvas context using the dimensions specified
+function drawRectangle(contextO, x, y, w, h, fill) {			
+  contextO.beginPath();
+  contextO.rect(x, y, w, h);
+  contextO.closePath();
+  contextO.stroke();
+  if (fill) contextO.fill();
+}
+</script>
+</head>
+<body onLoad="graph();">
+<canvas id="graphSpace" width="800" height="400"></canvas>
+</div>
+</body>
+</html>

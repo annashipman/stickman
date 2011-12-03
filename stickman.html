@@ -1,0 +1,63 @@
+<!DOCTYPE html> 
+<html class="no-js">
+<head>
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.4/jquery.min.js"></script> 
+<script type="text/javascript">
+function draw(){
+    var graphCanvas = document.getElementById('graphSpace');
+    var context = graphCanvas.getContext('2d');
+
+    var startX=100,
+        startY=175;
+            
+    drawStickMan(startX, startY, context);
+    drawSpeechBubble(startX,startY,context);
+    startX=500;    
+    drawStickMan(startX, startY, context);
+
+
+}
+
+function drawStickMan(startX, startY, context){
+    var headSize = 30,
+        bodyLength = 120,
+        pelvisX = startX,
+        pelvisY = startY+bodyLength,
+        stride = 50,
+        armLength = bodyLength/2;
+    
+    context.moveTo(startX,startY);
+    context.strokeStyle = "#000000";
+    context.lineWidth = "5.0";
+    context.beginPath();
+    context.arc(startX, startY, headSize, 0, Math.PI*2, true); 
+    context.closePath();
+    context.moveTo(startX, startY+headSize);
+    context.lineTo(pelvisX, pelvisY);
+    context.lineTo(pelvisX - stride,     pelvisY+bodyLength);
+    context.moveTo(pelvisX, pelvisY)
+    context.lineTo(pelvisX + stride,     pelvisY+bodyLength);
+    context.moveTo(startX -armLength, startY+(bodyLength/2));
+    context.lineTo(startX +armLength, startY+(bodyLength/2));
+          
+
+    context.stroke();
+}
+
+function drawSpeechBubble(startX, startY, context){
+    
+    context.arcTo(startX+30,startY,startX+70,startY+70, 10);
+    context.closePath();
+    context.stroke();
+
+
+}
+
+</script>
+</head>
+<body onLoad="draw();">
+<canvas id="graphSpace" width="800" height="400"></canvas>
+</div>
+</body>
+</html>
