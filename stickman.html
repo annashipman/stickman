@@ -12,11 +12,10 @@ function draw(){
         startY=175;
             
     drawStickMan(startX, startY, context);
-    drawSpeechBubble(startX,startY,context);
+    
+    drawSpeechBubble(startX+35,startY-35,context);
     startX=500;    
     drawStickMan(startX, startY, context);
-
-
 }
 
 function drawStickMan(startX, startY, context){
@@ -46,14 +45,39 @@ function drawStickMan(startX, startY, context){
 }
 
 function drawSpeechBubble(startX, startY, context){
-    
-    context.arcTo(startX+30,startY,startX+70,startY+70, 10);
-    context.closePath();
-    context.stroke();
+    context.lineWidth="2.0";
+       
+     var startRadians=radians(90),
+         endRadians=radians(0);
 
+    drawStalk(startRadians,endRadians,50);
+    startY=startY-50;
+    endRadians = radians(30);
+    drawStalk(startRadians,endRadians,100);
+    drawBubble(70);
+
+    function drawStalk(startAngle, endAngle, radius){
+        context.beginPath();
+        context.arc(startX,startY, radius, startAngle, endAngle ,true);
+        context.stroke();
+    }
+
+    function drawBubble(radius){
+        context.beginPath();
+        context.arc(startX+70,startY-18, radius, radians(75), radians(105) ,true);
+        context.stroke();
+    }
 
 }
 
+
+
+
+
+
+function radians(degrees){
+     return (Math.PI/180)*degrees;
+}
 </script>
 </head>
 <body onLoad="draw();">
