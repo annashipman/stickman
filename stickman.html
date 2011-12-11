@@ -8,13 +8,25 @@ var context, Stickman = {};
 
 function draw(){
     context = document.getElementById('canvas').getContext('2d');
-    Stickman.startX=100;
+    Stickman.startX=200;
     Stickman.startY=175;
-            
+    
+    drawBox();        
     drawStickMan();
-    drawSpeechBubble("Hello");
-    Stickman.startX=500;    
+    drawSpeechBubbleToRight("Hello");
+    Stickman.startX=650;  
+    drawSpeechBubbleToLeft("Hi Anna");  
     drawStickMan();
+}
+
+function drawBox(){
+    context.lineWidth="5";
+    context.moveTo(50,10);
+    context.lineTo(790,10);
+    context.lineTo(790,450);
+    context.lineTo(50,450);
+    context.lineTo(50,10);
+    context.stroke();
 }
 
 function drawStickMan(){
@@ -57,42 +69,70 @@ function drawArms(){
     context.lineTo(leftHandX + Stickman.bodyLength, handsY);
 }
 
-function drawSpeechBubble(speechText){
+function drawSpeechBubbleToRight(speechText){
+    context.lineWidth="2.0";    
     var speechBubbleOffset = 35;
-    context.lineWidth="2.0";
-     var bubbleX = Stickman.startX + speechBubbleOffset,
-        bubbleY = Stickman.startY - speechBubbleOffset,
-        startRadians=radians(90),
-        endRadians=radians(0);
+    
+    var bubbleX = Stickman.startX + speechBubbleOffset, //different
+        bubbleY = Stickman.startY - speechBubbleOffset;
 
-    drawStalk(startRadians,endRadians,50);
-    bubbleY=bubbleY-50;
-    endRadians = radians(30);
-    drawStalk(startRadians,endRadians,100);
-    drawBubble(100);
-    fillText();
+    drawStalkToRight();
+    drawBubble(bubbleX+70, bubbleY);
+    fillText(speechText, Stickman.startX+70);
 
-    function drawStalk(startAngle, endAngle, radius){
+    function drawStalkToRight(){
         context.beginPath();
-        context.arc(bubbleX,bubbleY, radius, startAngle, endAngle ,true);
+        context.arc(bubbleX, bubbleY, 50, radians(90),radians(0), true); 
+        context.stroke();
+
+        bubbleY=bubbleY-50;
+
+        context.beginPath();
+        context.arc(bubbleX,bubbleY, 100, radians(90),radians(30), true);
+        context.stroke();
+    }
+}
+
+function drawSpeechBubbleToLeft(speechText){
+    context.lineWidth="2.0";    
+    var speechBubbleOffset = 35;
+    
+    var bubbleX = Stickman.startX - speechBubbleOffset,
+        bubbleY = Stickman.startY - speechBubbleOffset;
+
+    drawStalkToLeft();
+    drawBubble(bubbleX-70, bubbleY);
+    fillText(speechText, Stickman.startX-150);
+
+    function drawStalkToLeft(){
+        context.beginPath();
+        context.arc(bubbleX, bubbleY, 50, radians(90),radians(180), false); 
+        context.stroke();
+
+        bubbleY=bubbleY-50;
+
+        context.beginPath();
+        context.arc(bubbleX,bubbleY, 100, radians(90),radians(150), false);
         context.stroke();
     }
 
-    function drawBubble(radius){
+}
+
+function drawBubble(bubbleX, bubbleY){
         context.save();
         context.scale(1, 0.5);
         context.lineWidth="3.0";
         context.beginPath();
-        context.arc(bubbleX+70,bubbleY+90, radius, radians(80), radians(100) ,true);
+        context.arc(bubbleX,bubbleY+90, 100, radians(80), radians(100) ,true);
         context.stroke();
         context.restore();
-    }
-    
-    function fillText(){
-        context.fillText(speechText, Stickman.startX+70,Stickman.startY-70);
-    }
-
 }
+
+
+function fillText(speechText, speechX){
+    context.fillText(speechText, speechX,Stickman.startY-70);
+}
+
 
 function radians(degrees){
      return (Math.PI/180)*degrees;
@@ -100,7 +140,7 @@ function radians(degrees){
 </script>
 </head>
 <body onLoad="draw();">
-<canvas id="canvas" width="800" height="400"></canvas>
+<canvas id="canvas" width="800" height="500"></canvas>
 </div>
 </body>
 </html>
